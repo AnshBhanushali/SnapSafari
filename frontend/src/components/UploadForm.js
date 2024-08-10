@@ -1,65 +1,111 @@
 import React, { useState } from 'react';
-import { uploadImage } from '../api/api';
-import AnimalInfo from './AnimalInfo';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import axios from 'axios';
+import './UploadForm.css';
 
-const UploadForm = () => {
-    const [file, setFile] = useState(null);
+function UploadForm() {
     const [animalInfo, setAnimalInfo] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [isDragging, setIsDragging] = useState(false);
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setLoading(true);
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-            const response = await uploadImage(formData);
-            setAnimalInfo(response.data);
-        } catch (error) {
-            console.error('Error uploading image', error);
-        } finally {
-            setLoading(false);
+        if (event.target.files.length > 0) {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            setError('');
+            handleFileUpload(formData);
+        } else {
+            setError('Please select a valid file.');
         }
     };
 
+    const handleFileUpload = async (formData) => {
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setAnimalInfo(response.data);
+        } catch (error) {
+            setError('Failed to upload file or retrieve animal information.');
+            console.error('Error uploading file:', error);
+        }
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (event) => {
+        event.preventDefault();
+        setIsDragging(false);
+        if (event.dataTransfer.files.length > 0) {
+            const file = event.dataTransfer.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            setError('');
+            handleFileUpload(formData);
+        } else {
+            setError('Please drop a valid file.');
+        }
+    };
+
+    const renderAnimalInfo = (info) => {
+        return Object.keys(info).map((key) => {
+            const value = info[key];
+            if (typeof value === 'object' && value !== null) {
+                return (
+                    <div key={key} className="animal-info-section">
+                        <h4>{key.charAt(0).toUpperCase() + key.slice(1)}</h4>
+                        {renderAnimalInfo(value)}
+                    </div>
+                );
+            }
+            return (
+                <p key={key}><strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {value}</p>
+            );
+        });
+    };
+
     return (
-        <Box sx={{ textAlign: 'center', mt: 4 }}>
-            <Typography variant="h4" gutterBottom>
-                Upload an Animal Picture
-            </Typography>
-            <form onSubmit={handleSubmit}>
+        <div className="upload-form-container">
+            <h1 className="title">Animal Identifier</h1>
+
+            <div
+                className={`dropzone ${isDragging ? 'dragging' : ''}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+            >
+                <p>Drag & Drop your image here, or</p>
                 <input
                     type="file"
+                    className="file-input"
                     onChange={handleFileChange}
-                    accept="image/*"
                     style={{ display: 'none' }}
-                    id="upload-button"
+                    id="file-upload"
                 />
-                <label htmlFor="upload-button">
-                    <Button variant="contained" component="span">
-                        Choose File
-                    </Button>
+                <label htmlFor="file-upload" className="upload-button">
+                    Browse
                 </label>
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    sx={{ ml: 2 }}
-                    disabled={!file || loading}
-                >
-                    {loading ? <CircularProgress size={24} /> : 'Upload Image'}
-                </Button>
-            </form>
-            {animalInfo && <AnimalInfo info={animalInfo} />}
-        </Box>
+            </div>
+
+            {error && <p className="error">{error}</p>}
+
+            {animalInfo && (
+                <div className="animal-info-card">
+                    <h2 className="animal-name">{animalInfo.animal}</h2>
+                    {renderAnimalInfo(animalInfo.info[0] || {})}
+                </div>
+            )}
+        </div>
     );
-};
+}
 
 export default UploadForm;
-

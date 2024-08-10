@@ -1,0 +1,98 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.upload-form-container {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.dropzone {
+    border: 2px dashed #aaa;
+    border-radius: 10px;
+    padding: 40px;
+    cursor: pointer;
+    background-color: #fafafa;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+}
+
+.dropzone p {
+    margin: 0;
+    font-size: 16px;
+    color: #666;
+}
+
+.dropzone.dragging {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+}
+
+.upload-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+.upload-button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.animal-info-card {
+    margin-top: 500px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.animal-name {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.animal-info-section {
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.animal-info-section h4 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 8px;
+}

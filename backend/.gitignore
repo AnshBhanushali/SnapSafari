@@ -1,0 +1,37 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Flask
+instance/
+*.log
+
+# Machine Learning Models
+*.pt
+*.pth
+*.h5
+
+# Environment Variables
+.env
+
+# IDEs and Editors
+.vscode/
+.idea/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Temporary Files
+*.tmp
+*.swp
+*.swo
+*.bak
+*.orig
+*.~*
