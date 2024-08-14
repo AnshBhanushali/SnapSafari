@@ -31,7 +31,7 @@ SnapSafari is a Flask-based web application that utilizes a PyTorch model to ide
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/SnapSafari.git
+git clone https://github.com/AnshBhanushali/SnapSafari.git
 cd SnapSafari
 ```
 
